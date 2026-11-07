@@ -565,9 +565,82 @@ app.post("/api/projects/:projectId/stories", async (req, res) => {
     }
 });
 
+// Function to return a story
+app.get("/api/projects/:projectId/stories/:storyId"), async (req, res) => {
+    try {
+        // Extract the projectId and storyId from the parameters
+        const {projectId, storyId} = req.params;
+
+        // Validate projectId and storyId as ObjectIds
+        if (!ObjectId.isValid(projectId) && !ObjectId.isValid(storyId)) {
+            // Return an error
+            return res.status(400).json({
+                message: "ProjectId and StoryId must be of type ObjectId."
+            });
+        }
+
+        // Create the ObjectId variants of projectId and storyId
+        const pId = new ObjectId(projectId);
+        const sId = new ObjectId(storyId);
+
+        // Verify the project exists
+        const project = projects.findOne({ _id: pId });
+        if (!project) {
+            return res.status(400).json({
+                message: "Project does not exist."
+            });
+        }
+
+        // Find the story associated with the project
+        const story = await user_stories.findOne({
+            _id: sId,
+            project_id: pId
+        });
+
+        // Return an error message if no story is found
+        if (!story) {
+            return res.status(400).json({
+                message: "Story not found."
+            });
+        }
+
+        // Else, return the story
+        return res.status(200).json({
+            message: "Story found.",
+            story: story
+        });
+
+    } catch (error) {
+        // Return an error if something happens along the way
+        console.error("Error editing a user story");
+        return res.status(400).json({
+            message: "Server error fetching story."
+        });
+    }
+}
+
 // Function to edit a story
 app.put("/api/projects/:projectId/stories/:storyId", async (req, res) => {
+    try {
+        // Extract the projectId and storyId from the parameters
+        const {projectId, storyId} = req.params;
 
+        // Validate projectId and storyId as ObjectIds
+        if (!ObjectId.isValid(projectId) && !ObjectId.isValid(storyId)) {
+            // Return an error
+            return res.status(400).json({
+                message: "ProjectId and StoryId must be of type ObjectId."
+            });
+        }
+
+        
+    } catch (error) {
+        // Return an error if something happens along the way
+        console.error("Error editing a user story");
+        return res.status(400).json({
+            message: "Server error editing a story."
+        });
+    }
 });
 
 // Function to delete a story
