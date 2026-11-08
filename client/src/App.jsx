@@ -4,15 +4,17 @@ import './App.css'
 import CreateProject from './components/CreateProject'
 import ProjectList from './components/ProjectList'
 import ManageMembers from './components/ManageMembers'
+import ProjectBacklog from './components/ProjectBacklog'
 
 function App() {
   return (
     <div className="main-layout">
       <Signup />
       <Login />
-      <CreateProject />
       <ProjectList />
+      <CreateProject />
       <ManageMembers />
+      <ProjectBacklog />
     </div>
   )
 }
